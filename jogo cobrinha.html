@@ -5,7 +5,16 @@
 </head>
 <body>
     <canvas id="stage" width="600" height="600"></canvas>
+    
     <script type="text/javascript">
+        function random() {
+            return Math.floor(Math.random() * (19));
+        }
+        let coords = [];
+        for(let i = 0; i < 20; i++) {
+            coords.push({x:random(), y:random()});
+        }
+        
         window.onload = function(){
             
             var stage = document.getElementById('stage');
@@ -20,7 +29,6 @@
             var py = 15;
             var tp = 30;
             var qp = 20;
-            var ax=ay=15;
 
             var caminho = [];
             rabo = 5;
@@ -46,7 +54,9 @@
                 ctx.fillRect(0,0, stage.width, stage.height);
 
                 ctx.fillStyle = "red";
-                ctx.fillRect(ax*tp, ay*tp, tp,tp);
+                coords.forEach((value, index) => {
+                    ctx.fillRect(value.x*tp, value.y*tp, tp, tp);
+                })
 
                 ctx.fillStyle = "green";
                 for (var i = 0; i < caminho.length; i++) {
@@ -61,11 +71,15 @@
                 while (caminho.length > rabo) {
                     caminho.shift();
                 }
-                if (ax==px && ay==py){
-                    rabo++;
-                    ax = Math.floor(Math.random()*qp);
-                    ay = Math.floor(Math.random()*qp);
-                }
+                
+                coords.forEach((value, index) => {
+                    if(value.x == px && value.y == py){
+                        console.log(coords.length);
+                        coords[index] = null
+                        coords = coords.filter(value => value != null);
+                        rabo++;
+                    }
+                })
             }
             function keyPush(event){
 
